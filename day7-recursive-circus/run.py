@@ -93,7 +93,7 @@ def find_unbalanced_parent(prog):
 
 
 def puzzle2(tree):
-    disc = [e for e in tree.values() if not is_balanced(e)]
+    disc = sorted((e for e in tree.values() if not is_balanced(e)), key=height)
     parent, delta = find_unbalanced_parent(disc[0])
     return parent.weight + delta
 
