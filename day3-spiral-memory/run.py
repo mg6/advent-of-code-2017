@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import itertools
+from collections import defaultdict
 
 
 def distances_to_center():
@@ -66,9 +66,6 @@ print(distance_to_center(spiral_length))
 
 
 # -------------------------------------
-
-
-from collections import defaultdict
 
 
 def neighbourhood(p):
