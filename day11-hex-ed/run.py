@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-N  = 'n'
+N = 'n'
 NE = 'ne'
 SE = 'se'
-S  = 's'
+S = 's'
 SW = 'sw'
 NW = 'nw'
 

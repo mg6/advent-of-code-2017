@@ -11,15 +11,15 @@ def validate_no_anagrams(passphrase):
     return len(set(words)) == len(words)
 
 
-assert     validate_no_repeated("aa bb cc dd ee")
-assert     validate_no_repeated("aa bb cc dd aaa")
+assert validate_no_repeated("aa bb cc dd ee")
+assert validate_no_repeated("aa bb cc dd aaa")
 assert not validate_no_repeated("aa bb cc dd aa")
 
-assert     validate_no_anagrams("aa bb cc dd ee")
-assert     validate_no_anagrams("aa bb cc dd aaa")
-assert     validate_no_anagrams("abcde fghij")
-assert     validate_no_anagrams("a ab abc abd abf abj")
-assert     validate_no_anagrams("iiii oiii ooii oooi oooo")
+assert validate_no_anagrams("aa bb cc dd ee")
+assert validate_no_anagrams("aa bb cc dd aaa")
+assert validate_no_anagrams("abcde fghij")
+assert validate_no_anagrams("a ab abc abd abf abj")
+assert validate_no_anagrams("iiii oiii ooii oooi oooo")
 assert not validate_no_anagrams("aa bb cc dd aa")
 assert not validate_no_anagrams("abcde xyz ecdab")
 assert not validate_no_anagrams("oiii ioii iioi iiio")
