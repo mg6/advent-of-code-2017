@@ -30,7 +30,7 @@ test_runner() {
   | while read dir; do
     echo >&2 "[[Dir $dir]]"
     {
-      pushd "$dir"
+      pushd "$dir" >/dev/null
       echo >&2 "[Start $(now)]"
       run_suite "$dir"
       echo >&2 "[Ended $(now)]"
