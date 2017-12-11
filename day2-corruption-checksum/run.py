@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 def row_min_max_checksum(s):
     nums = [int(n) for n in s.split()]
     return max(nums) - min(nums) if len(nums) > 0 else 0

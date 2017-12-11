@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 def parse_garbage(stream):
     stream = iter(stream)
     while True:
@@ -9,7 +10,7 @@ def parse_garbage(stream):
             return
         else:
             if c == '!':
-                _ = next(stream)
+                next(stream)
             elif c == '>':
                 return
             else:
@@ -36,7 +37,6 @@ def parse_stream(stream):
 def get_score(elem, score=0):
     children = sum(get_score(e, score=score+1) for e in elem if type(e) == list)
     return score + children
-        
 
 
 def count_garbage(elem):
@@ -73,7 +73,7 @@ assert_next(parse_stream('{{}, {}}'), [[], []])
 assert_next(parse_stream('{{{},{},{{}}}}'), [[[], [], [[]]]])
 
 stream = parse_stream('{<a>,<a>,<a>,<a>}')
-assert_next(stream, ['a','a','a','a'])
+assert_next(stream, ['a', 'a', 'a', 'a'])
 
 stream = parse_stream('{{<ab>},{<ab>},{<ab>},{<ab>}}')
 assert_next(stream, [['ab'], ['ab'], ['ab'], ['ab']])
