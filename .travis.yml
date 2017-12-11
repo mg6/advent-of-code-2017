@@ -1,6 +1,13 @@
 dist: trusty
 sudo: false
 
-language: generic
+language: python
+python:
+ - "3.6"
 
-script: ./test.sh
+install:
+ - pip install flake8
+
+script:
+ - flake8
+ - ./test.sh
