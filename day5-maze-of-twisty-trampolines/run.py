@@ -3,9 +3,12 @@
 import itertools
 
 
-increment = lambda offset: 1
+def increment(_):
+    return 1
 
-strange_jump = lambda offset: -1 if offset > 2 else 1
+
+def strange_jump(offset):
+    return -1 if offset > 2 else 1
 
 
 def cpu_states(initial_state, increase_func, at=0):
