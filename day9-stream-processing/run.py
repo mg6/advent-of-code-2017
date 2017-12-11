@@ -10,7 +10,7 @@ def parse_garbage(stream):
             return
         else:
             if c == '!':
-                _ = next(stream)
+                next(stream)
             elif c == '>':
                 return
             else:
