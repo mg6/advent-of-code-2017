@@ -2,7 +2,7 @@
 
 import statistics
 
-from collections import defaultdict, deque
+from collections import deque
 
 
 class Program:
