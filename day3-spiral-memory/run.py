@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import itertools
+from collections import defaultdict
 
 
 def distances_to_center():
@@ -68,9 +68,6 @@ print(distance_to_center(spiral_length))
 # -------------------------------------
 
 
-from collections import defaultdict
-
-
 def neighbourhood(p):
     """Returns 9 points belonging to neighbourhood of point <p>."""
     x, y = p
@@ -96,13 +93,14 @@ def runs():
         n += 1
 
 
-def spiral_points(start_pos):
-    RIGHT  = 0
-    UP     = 1
-    LEFT   = 2
-    DOWN   = 3
-    NUMDIR = 4
+RIGHT = 0
+UP = 1
+LEFT = 2
+DOWN = 3
+NUMDIR = 4
 
+
+def spiral_points(start_pos):
     run = runs()
     movements = next(run)
 
@@ -115,13 +113,13 @@ def spiral_points(start_pos):
         x, y = pos
 
         if direction == RIGHT:
-            pos = (x+1,y+0)
+            pos = (x+1, y+0)
         elif direction == UP:
-            pos = (x+0,y+1)
+            pos = (x+0, y+1)
         elif direction == LEFT:
-            pos = (x-1,y+0)
+            pos = (x-1, y+0)
         elif direction == DOWN:
-            pos = (x+0,y-1)
+            pos = (x+0, y-1)
 
         movements -= 1
 
@@ -134,7 +132,7 @@ def spiral_points(start_pos):
 def neighbour_sums():
     """Walks through the spiral, generating sums out of neighbouring points."""
     value_map = defaultdict(int)
-    spiral_pos = spiral_points((0,0))
+    spiral_pos = spiral_points((0, 0))
 
     pos = next(spiral_pos)
     value_map[pos] = 1
@@ -145,8 +143,8 @@ def neighbour_sums():
         pos = next(spiral_pos)
 
 
-actual = neighbourhood((0,0))
-expected = [(0,0),(1,0),(1,1),(0,1),(-1,1),(-1,0),(-1,-1),(0,-1),(1,-1)]
+actual = neighbourhood((0, 0))
+expected = [(0, 0), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
 assert actual == expected
 
 
@@ -162,20 +160,20 @@ assert_next(run, 2)
 assert_next(run, 2)
 assert_next(run, 3)
 
-pts = spiral_points((0,0))
-assert_next(pts, (+0,+0))
-assert_next(pts, (+1,+0))
-assert_next(pts, (+1,+1))
-assert_next(pts, (+0,+1))
-assert_next(pts, (-1,+1))
-assert_next(pts, (-1,+0))
-assert_next(pts, (-1,-1))
-assert_next(pts, (+0,-1))
-assert_next(pts, (+1,-1))
-assert_next(pts, (+2,-1))
-assert_next(pts, (+2,+0))
-assert_next(pts, (+2,+1))
-assert_next(pts, (+2,+2))
+pts = spiral_points((0, 0))
+assert_next(pts, (+0, +0))
+assert_next(pts, (+1, +0))
+assert_next(pts, (+1, +1))
+assert_next(pts, (+0, +1))
+assert_next(pts, (-1, +1))
+assert_next(pts, (-1, +0))
+assert_next(pts, (-1, -1))
+assert_next(pts, (+0, -1))
+assert_next(pts, (+1, -1))
+assert_next(pts, (+2, -1))
+assert_next(pts, (+2, +0))
+assert_next(pts, (+2, +1))
+assert_next(pts, (+2, +2))
 
 sums = neighbour_sums()
 assert_next(sums, 1)
@@ -194,6 +192,7 @@ def puzzle(spiral_length):
     for s in neighbour_sums():
         if s > spiral_length:
             return s
+
 
 spiral_length = 277678
 print(puzzle(spiral_length))

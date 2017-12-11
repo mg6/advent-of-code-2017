@@ -2,7 +2,7 @@
 
 import statistics
 
-from collections import defaultdict, deque
+from collections import deque
 
 
 class Program:
@@ -44,10 +44,8 @@ def build_tree(data):
             for parent in parents:
                 elems[name].parents[parent] = elems[parent]
                 elems[parent].children[name] = elems[name]
-                assert all(type(parent) == Program
-                    for parent in elems[name].parents.values())
-                assert all(type(child) == Program
-                    for child in elems[parent].children.values())
+                assert all(type(parent) == Program for parent in elems[name].parents.values())
+                assert all(type(child) == Program for child in elems[parent].children.values())
         except KeyError:
             data.append(entry)
 

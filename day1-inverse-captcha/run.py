@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 def solve_doubled_digit_captcha(s):
     def repeated_digits(s):
         for i in range(len(s) - 1):

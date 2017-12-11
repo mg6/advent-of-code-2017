@@ -6,7 +6,7 @@ from itertools import count
 
 def redistribute(banks):
     num_banks = len(banks)
-    at, val = reduce(lambda a, b: b if a[1] < b[1] else a, enumerate(banks)) 
+    at, val = reduce(lambda a, b: b if a[1] < b[1] else a, enumerate(banks))
     banks[at] = 0
 
     for i in range(val):
