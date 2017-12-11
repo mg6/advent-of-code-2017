@@ -56,11 +56,11 @@ c dec -10 if a >= 1
 c inc -20 if c == 10
 """.strip().split('\n')
 
-assert     valid_cond(3, '<',  6)
+assert valid_cond(3, '<',  6)
 assert not valid_cond(3, '>=', 6)
-assert     valid_cond(3, '<=', 6)
+assert valid_cond(3, '<=', 6)
 assert not valid_cond(3, '>',  6)
-assert     valid_cond(3, '!=', 6)
+assert valid_cond(3, '!=', 6)
 assert not valid_cond(3, '==', 6)
 
 try:
@@ -71,10 +71,10 @@ else:
     assert False, 'Should throw for unsupported operation'
 
 states = register_states(program)
-assert_next(states, {'a': 0}) # b inc 5 if a > 1
-assert_next(states, {'a': 1, 'b': 0}) # a inc 1 if b < 5
-assert_next(states, {'a': 1, 'b': 0, 'c': 10}) # c dec -10 if a >= 1
-assert_next(states, {'a': 1, 'b': 0, 'c': -10}) # c inc -20 if c == 10
+assert_next(states, {'a': 0})                       # b inc 5 if a > 1
+assert_next(states, {'a': 1, 'b': 0})               # a inc 1 if b < 5
+assert_next(states, {'a': 1, 'b': 0, 'c': 10})      # c dec -10 if a >= 1
+assert_next(states, {'a': 1, 'b': 0, 'c': -10})     # c inc -20 if c == 10
 
 try:
     next(states)

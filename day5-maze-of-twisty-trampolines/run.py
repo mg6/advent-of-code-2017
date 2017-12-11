@@ -44,7 +44,7 @@ def assert_next(iter, expected):
 
 assert increment(0) == 1
 
-assert all(strange_jump(n) ==  1 for n in range(-10, 3))
+assert all(strange_jump(n) == +1 for n in range(-10, 3))
 assert all(strange_jump(n) == -1 for n in range(3, 10))
 
 state = cpu_states([0, 3, 0, 1, -3], increase_func=increment, at=0)
