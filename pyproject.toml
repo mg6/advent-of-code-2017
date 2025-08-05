@@ -12,7 +12,12 @@ keywords = []
 authors = [{ name = "Maciej Gamrat", email = "dev@gamrat.it" }]
 dependencies = []
 
+[tool.hatch.envs.hatch-test]
+default-args = ["--config-file=pyproject.toml"]
+extra-args = ["-v"]
+
 [tool.pytest.ini_options]
+testpaths = "**/run.py"
 addopts = [
   # Allow test files to have the same name in different directories.
   "--import-mode=importlib",
