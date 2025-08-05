@@ -3,9 +3,11 @@
 
 from collections import deque
 
+START = "abcdefghijklmnop"
 
-def dance(progs='abcdefghijklmnop'):
-    progs = deque((progs))
+
+def dance(progs=START):
+    progs = deque(progs)
 
     while True:
         move = yield
@@ -21,24 +23,47 @@ def dance(progs='abcdefghijklmnop'):
         yield ''.join(progs)
 
 
-d = dance('abcde')
-next(d)
-assert d.send('s1') == 'eabcd'
-next(d)
-assert d.send('x3/4') == 'eabdc'
-next(d)
-assert d.send('pe/b') == 'baedc'
+def test_dance():
+    d = dance("abcde")
+
+    next(d)
+    assert d.send("s1") == "eabcd"
+
+    next(d)
+    assert d.send("x3/4") == "eabdc"
+
+    next(d)
+    assert d.send("pe/b") == "baedc"
 
 
 if __name__ == '__main__':
+    NUM_ITERS = 1_000_000_000
+
     with open('input') as f:
         s = f.read().strip()
         moves = s.split(',')
 
     d = dance()
 
-    for move in moves:
-        next(d)
-        progs = d.send(move)
+    i = 0
+    while i < NUM_ITERS:
+        i += 1
 
-    print(progs)
+        # execute once
+        for move in moves:
+            next(d)
+            progs = d.send(move)
+
+        if i == 1:
+            # part 1
+            print(progs, i)
+
+        elif progs == START:
+            # cycle detected
+            print(progs, i)
+            i = NUM_ITERS - NUM_ITERS % i
+
+        elif i >= NUM_ITERS:
+            # part 2
+            print(progs, i)
+            break
