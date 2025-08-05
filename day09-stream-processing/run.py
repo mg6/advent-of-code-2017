@@ -28,7 +28,7 @@ def parse_stream(stream):
             if c == '{':
                 yield list(parse_stream(stream))
             elif c == '}':
-                raise StopIteration
+                return
             elif c == '<':
                 garbage = ''.join(parse_garbage(stream))
                 yield garbage
