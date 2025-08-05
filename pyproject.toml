@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "AoC2017"
+version = "0.0.0"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [{ name = "Maciej Gamrat", email = "dev@gamrat.it" }]
+dependencies = []
+
+[tool.pytest.ini_options]
+addopts = [
+  # Allow test files to have the same name in different directories.
+  "--import-mode=importlib",
+]
