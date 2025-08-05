@@ -39,6 +39,8 @@ gen_a = generator(16807, seed=65)
 gen_b = generator(48271, seed=8921)
 assert judge(gen_a, gen_b, 5) == 1
 
+assert False, "unoptimized"
+
 gen_a = generator(16807, seed=65)
 gen_b = generator(48271, seed=8921)
 assert judge(gen_a, gen_b, int(40e6)) == 588

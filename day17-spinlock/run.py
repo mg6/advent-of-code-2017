@@ -54,6 +54,8 @@ s = spinlock(puzzle_input)
 state = next(islice(s, 2017, 2018))
 print(state[0])
 
+assert False, "unoptimized"
+
 s = spinlock(puzzle_input)
 state = next(islice(s, 50000000, 50000000+1))
 print(state[state.index(0) + 1])
