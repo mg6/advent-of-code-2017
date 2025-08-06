@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "AoC2017"
 version = "0.0.0"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = "MIT"
 keywords = []
 authors = [{ name = "Maciej Gamrat", email = "dev@gamrat.it" }]
@@ -16,8 +16,11 @@ dependencies = []
 default-args = ["--config-file=pyproject.toml"]
 extra-args = ["-v"]
 
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.10"]
+
 [tool.pytest.ini_options]
-testpaths = "**/run.py"
+testpaths = "**/run.py **/test.py"
 addopts = [
   # Allow test files to have the same name in different directories.
   "--import-mode=importlib",
