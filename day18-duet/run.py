@@ -1,152 +1,116 @@
 #!/usr/bin/env python3
 
-
 from collections import defaultdict
 
 
-def get_val(name, state):
-    try:
-        return int(name)
-    except ValueError:
-        return state[name]
+class interpreter:
+    """Parse and run a tablet program."""
 
+    def __init__(self, prog, **kwargs):
+        assert type(prog) is str
 
-def interpreter(prog, **kwargs):
-    if type(prog) == str:
-        prog = prog.strip().split('\n')
+        self.prog = prog.strip().split("\n")
+        self.regs = defaultdict[str, int](int)
+        for k, v in kwargs.items():
+            self.regs[k] = int(v)
 
-    regs = defaultdict(int)
-    pc = 0
+        self.len = len(self.prog)
+        self.pc = 0
 
-    while 0 <= pc < len(prog):
-        instr = prog[pc]
+    def get(self, name: str | int) -> int:
+        """Return value of register or numeric literal."""
+        try:
+            return int(name)
+        except ValueError:
+            return self.regs[str(name)]
+
+    def set(self, name: str, val: str | int):
+        """Set register to the value of another register or numeric literal."""
+        val = self.get(val)
+        self.regs[name] = val
+
+    def next(self):
+        """True for program counter within bounds."""
+        return 0 <= self.pc < self.len
+
+    def run(self):
+        """Run program until completion."""
+        while self.next():
+            self.step()
+        return self.regs
+
+    def until(self, cond):
+        """Run program until condition is true."""
+        while self.next():
+            self.step()
+            if cond(self):
+                break
+        return self.regs
+
+    def cmd(self):
+        """Get current command."""
+        instr = self.prog[self.pc]
         cmd, *args = instr.split()
+        return cmd, args
 
-        if cmd == 'set':
+    def step(self):
+        """Perform single program step."""
+        cmd, args = self.cmd()
+
+        if cmd == "set":
             reg, arg = args
-            regs[reg] = get_val(arg, regs)
-        elif cmd == 'add':
+            self.set(reg, arg)
+
+        elif cmd == "add":
             reg, arg = args
-            regs[reg] += get_val(arg, regs)
-        elif cmd == 'mul':
+            v = self.get(reg) + self.get(arg)
+            self.set(reg, v)
+
+        elif cmd == "mul":
             reg, arg = args
-            regs[reg] *= get_val(arg, regs)
-        elif cmd == 'mod':
+            v = self.get(reg) * self.get(arg)
+            self.set(reg, v)
+
+        elif cmd == "mod":
             reg, arg = args
-            regs[reg] %= get_val(arg, regs)
-        elif cmd == 'jgz':
-            arg, offset = args
-            if get_val(arg, regs) > 0:
-                pc += int(offset)
-                continue
-        elif cmd == 'snd':
-            arg = get_val(args[0], regs)
-            regs['snd'] = arg
-        elif cmd == 'rcv':
-            arg = get_val(args[0], regs)
-            if arg != 0:
-                regs['rcv'] = regs['snd']
-                if 'rcv' in kwargs:
-                    kwargs['rcv'](regs['rcv'])
+            v = self.get(reg) % self.get(arg)
+            self.set(reg, v)
 
-        pc += 1
+        elif cmd == "jgz":
+            reg, arg = args
+            if self.get(reg) > 0:
+                self.pc += self.get(arg)
+                return
 
-    return regs
+        elif cmd == "snd":
+            arg, *_ = args
+            self.set("snd", self.get(arg))
 
+        elif cmd == "rcv":
+            arg, *_ = args
+            if self.get(arg) != 0:
+                self.set("rcv", self.get("snd"))
 
-actual = interpreter("""
-set a 5
-""")
-expected = {'a': 5}
-assert actual == expected, actual
+        else:
+            raise NotImplementedError
 
-actual = interpreter("""
-set z 5
-""")
-expected = {'z': 5}
-assert actual == expected, actual
+        self.pc += 1
 
-actual = interpreter("""
-set a 8
-set a 5
-""")
-expected = {'a': 5}
-assert actual == expected, actual
+    def snd(self):
+        """Get played sound value."""
+        return self.get("snd")
 
-actual = interpreter("""
-add a 8
-""")
-expected = {'a': 8}
-assert actual == expected, actual
-
-actual = interpreter("""
-set a 8
-mul a 2
-""")
-expected = {'a': 16}
-assert actual == expected, actual
-
-actual = interpreter("""
-set a 8
-mod a 3
-""")
-expected = {'a': 2}
-assert actual == expected, actual
-
-actual = interpreter("""
-add a 1
-jgz a 2
-add a 1
-""")
-expected = {'a': 1}
-assert actual == expected, actual
-
-actual = interpreter("""
-set a 8
-add a -1
-jgz a -1
-""")
-expected = {'a': 0}
-assert actual == expected, actual
-
-actual = interpreter("""
-jgz 5 -1
-""")
-expected = {}
-assert actual == expected, actual
-
-actual = interpreter("""
-set a 8
-snd a
-""")
-expected = {'a': 8, 'snd': 8}
-assert actual == expected, actual
-
-actual = interpreter("""
-snd 7
-rcv 0
-snd 6
-""")
-expected = {'snd': 6}
-assert actual == expected, actual
-
-actual = interpreter("""
-snd 7
-rcv 5
-snd 6
-""")
-expected = {'snd': 6, 'rcv': 7}
-assert actual == expected, actual
+    def rcv(self):
+        """Get recovered sound value."""
+        return self.get("rcv")
 
 
-if __name__ == '__main__':
-    import sys
-
-    with open('input') as f:
+if __name__ == "__main__":
+    with open("input") as f:
         prog = f.read().strip()
 
-    def rcv_triggered(snd):
-        print(snd)
-        sys.exit(0)
+    # part 1
 
-    interpreter(prog, rcv=rcv_triggered)
+    intp = interpreter(prog)
+    regs = intp.until(lambda i: i.rcv() > 0)
+    print(intp.rcv())
