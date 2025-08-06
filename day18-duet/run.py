@@ -14,6 +14,9 @@ class interpreter:
         for k, v in kwargs.items():
             self.regs[k] = int(v)
 
+        self.recvq = deque()
+        self.sendq = deque()
+
         self.len = len(self.prog)
         self.pc = 0
 
@@ -104,6 +107,14 @@ class interpreter:
         """Get recovered sound value."""
         return self.get("rcv")
 
+    def recv(self):
+        if len(self.recvq) > 0:
+            v = self.recvq.popleft()
+            return v, True
+        return 0, False
+
+    def send(self, v: int):
+        self.sendq.append(v)
 
 if __name__ == "__main__":
     with open("input") as f:
