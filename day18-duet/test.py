@@ -117,3 +117,55 @@ def test_rcv():
     actual = interpreter(prog).run()
     expected = {"snd": 6, "rcv": 7}
     assert actual == expected, actual
+
+
+def test_send():
+    prog = """
+    snd 1
+    snd 2
+    snd p
+    """
+    intp = interpreter(prog, p=5)
+    intp.run()
+    assert list(intp.sendq) == [1, 2, 5]
+
+
+def test_receive_none():
+    prog = """
+    rcv a
+    rcv b
+    rcv c
+    rcv d
+    """
+    intp = interpreter(prog, p=5)
+    assert intp.step() is False
+    assert intp.pc == 0
+
+
+def test_receive_some():
+    prog = """
+    rcv a
+    rcv b
+    rcv c
+    rcv d
+    """
+    intp = interpreter(prog, p=5)
+    intp.recvq.append(3)
+    intp.recvq.append(2)
+    intp.recvq.append(1)
+
+    assert intp.step() is True
+    assert intp.step() is True
+    assert intp.step() is True
+    assert intp.step() is False
+    assert intp.pc == 3
+    assert intp.step() is False
+    assert intp.pc == 3
+    assert intp.next()
+
+    intp.recvq.append(7)
+
+    assert intp.step() is True
+    assert intp.pc == 4
+    assert intp.rcv() == 7
+    assert not intp.next()
